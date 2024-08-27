@@ -15,28 +15,12 @@ docker run --name booking_cache \
     --network=myNetwork \
     -d redis:7.4
 
-docker run --name booking_back \
-    -p 7777:8000 \
-    --network=myNetwork \
-    booking_image
-
-
-docker run --name booking_celery_worker \
-    --network=myNetwork \
-    booking_image \
-    celery --app=src.tasks.celery_app:celery_instance worker -l INFO
-
-
-docker run --name booking_celery_beat \
-    --network=myNetwork \
-    booking_image \
-    celery --app=src.tasks.celery_app:celery_instance worker -l INFO -B
-
-
 docker build -t booking_image .
 
 
 docker run --name booking_nginx \
     --volume ./nginx.conf:/etc/nginx/nginx.conf \
+    --volume /etc/letsencrypt:/etc/letsencrypt \
+    --volume /var/lib/letsencrypt:/var/lib/letsencrypt \
     --network=myNetwork \
-    --rm -p 80:80 nginx
+    --rm -p 80:80 -p 443:443 nginx
