@@ -5,7 +5,7 @@ from fastapi_cache.decorator import cache
 
 from src.api.dependencies import PaginationDep, DBDep
 from src.exceptions import ObjectNotFoundException, HotelNotFoundHTTPException
-from src.schemas.hotels import HotelPatch, HotelAdd
+from src.schemas.hotels import HotelPatchDTO, HotelAddDTO
 from src.services.hotels import HotelService
 
 router = APIRouter(prefix="/hotels", tags=["Отели"])
@@ -41,7 +41,7 @@ async def get_hotel(hotel_id: int, db: DBDep):
 @router.post("")
 async def create_hotel(
     db: DBDep,
-    hotel_data: HotelAdd = Body(
+    hotel_data: HotelAddDTO = Body(
         openapi_examples={
             "1": {
                 "summary": "Сочи",
@@ -65,7 +65,7 @@ async def create_hotel(
 
 
 @router.put("/{hotel_id}")
-async def edit_hotel(hotel_id: int, hotel_data: HotelAdd, db: DBDep):
+async def edit_hotel(hotel_id: int, hotel_data: HotelAddDTO, db: DBDep):
     await HotelService(db).edit_hotel(hotel_id, hotel_data)
     return {"status": "OK"}
 
@@ -77,7 +77,7 @@ async def edit_hotel(hotel_id: int, hotel_data: HotelAdd, db: DBDep):
 )
 async def partially_edit_hotel(
     hotel_id: int,
-    hotel_data: HotelPatch,
+    hotel_data: HotelPatchDTO,
     db: DBDep,
 ):
     await HotelService(db).edit_hotel_partially(hotel_id, hotel_data, exclude_unset=True)

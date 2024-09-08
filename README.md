@@ -23,4 +23,13 @@ docker run --name booking_nginx \
     --volume /etc/letsencrypt:/etc/letsencrypt \
     --volume /var/lib/letsencrypt:/var/lib/letsencrypt \
     --network=myNetwork \
-    --rm -p 80:80 -p 443:443 nginx
+    --rm -p 80:80 -p 443:443 -d nginx
+
+```
+docker run -d --name gitlab-runner --restart always \
+  -v /srv/gitlab-runner/config:/etc/gitlab-runner \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  gitlab/gitlab-runner:alpine
+```
+
+`docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner:alpine register`

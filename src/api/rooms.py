@@ -9,7 +9,7 @@ from src.exceptions import (
     RoomNotFoundException,
     HotelNotFoundException,
 )
-from src.schemas.rooms import RoomAddRequest, RoomPatchRequest
+from src.schemas.rooms import RoomAddRequestDTO, RoomPatchRequestDTO
 from src.services.rooms import RoomService
 
 router = APIRouter(prefix="/hotels", tags=["Номера"])
@@ -34,7 +34,7 @@ async def get_room(hotel_id: int, room_id: int, db: DBDep):
 
 
 @router.post("/{hotel_id}/rooms")
-async def create_room(hotel_id: int, db: DBDep, room_data: RoomAddRequest = Body()):
+async def create_room(hotel_id: int, db: DBDep, room_data: RoomAddRequestDTO = Body()):
     try:
         room = await RoomService(db).create_room(hotel_id, room_data)
     except HotelNotFoundException:
@@ -46,7 +46,7 @@ async def create_room(hotel_id: int, db: DBDep, room_data: RoomAddRequest = Body
 async def edit_room(
     hotel_id: int,
     room_id: int,
-    room_data: RoomAddRequest,
+    room_data: RoomAddRequestDTO,
     db: DBDep,
 ):
     await RoomService(db).edit_room(hotel_id, room_id, room_data)
@@ -57,7 +57,7 @@ async def edit_room(
 async def partially_edit_room(
     hotel_id: int,
     room_id: int,
-    room_data: RoomPatchRequest,
+    room_data: RoomPatchRequestDTO,
     db: DBDep,
 ):
     await RoomService(db).partially_edit_room(hotel_id, room_id, room_data)

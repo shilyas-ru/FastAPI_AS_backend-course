@@ -9,7 +9,7 @@ from src.exceptions import (
     UserAlreadyExistsException,
     UserEmailAlreadyExistsHTTPException,
 )
-from src.schemas.users import UserRequestAdd
+from src.schemas.users import UserRequestAddDTO
 from src.services.auth import AuthService
 
 router = APIRouter(prefix="/auth", tags=["Авторизация и аутентификация"])
@@ -17,7 +17,7 @@ router = APIRouter(prefix="/auth", tags=["Авторизация и аутент
 
 @router.post("/register")
 async def register_user(
-    data: UserRequestAdd,
+    data: UserRequestAddDTO,
     db: DBDep,
 ):
     try:
@@ -30,7 +30,7 @@ async def register_user(
 
 @router.post("/login")
 async def login_user(
-    data: UserRequestAdd,
+    data: UserRequestAddDTO,
     response: Response,
     db: DBDep,
 ):
